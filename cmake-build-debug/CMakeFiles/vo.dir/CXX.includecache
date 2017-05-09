@@ -65,6 +65,8 @@ camera.hpp
 /Users/hatio/git/cam-vo/src/camera.hpp
 playback.hpp
 /Users/hatio/git/cam-vo/src/playback.hpp
+plotter.hpp
+/Users/hatio/git/cam-vo/src/plotter.hpp
 
 /Users/hatio/git/cam-vo/src/odometer.cpp
 odometer.hpp
@@ -79,6 +81,14 @@ playback.hpp
 /Users/hatio/git/cam-vo/src/playback.hpp
 
 /Users/hatio/git/cam-vo/src/playback.hpp
+common.h
+/Users/hatio/git/cam-vo/src/common.h
+
+/Users/hatio/git/cam-vo/src/plotter.cpp
+plotter.hpp
+/Users/hatio/git/cam-vo/src/plotter.hpp
+
+/Users/hatio/git/cam-vo/src/plotter.hpp
 common.h
 /Users/hatio/git/cam-vo/src/common.h
 

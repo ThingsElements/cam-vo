@@ -3,3 +3,4 @@
 #include "odometer.hpp"
 #include "camera.hpp"
 #include "playback.hpp"
+#include "plotter.hpp"

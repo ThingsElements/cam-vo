@@ -111,6 +111,12 @@
 		<Unit filename="/Users/hatio/git/cam-vo/src/playback.hpp">
 			<Option target="vo"/>
 		</Unit>
+		<Unit filename="/Users/hatio/git/cam-vo/src/plotter.cpp">
+			<Option target="vo"/>
+		</Unit>
+		<Unit filename="/Users/hatio/git/cam-vo/src/plotter.hpp">
+			<Option target="vo"/>
+		</Unit>
 		<Unit filename="/Users/hatio/git/cam-vo/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

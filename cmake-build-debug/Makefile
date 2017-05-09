@@ -231,6 +231,33 @@ src/playback.cpp.s:
 	$(MAKE) -f CMakeFiles/vo.dir/build.make CMakeFiles/vo.dir/src/playback.cpp.s
 .PHONY : src/playback.cpp.s
 
+src/plotter.o: src/plotter.cpp.o
+
+.PHONY : src/plotter.o
+
+# target to build an object file
+src/plotter.cpp.o:
+	$(MAKE) -f CMakeFiles/vo.dir/build.make CMakeFiles/vo.dir/src/plotter.cpp.o
+.PHONY : src/plotter.cpp.o
+
+src/plotter.i: src/plotter.cpp.i
+
+.PHONY : src/plotter.i
+
+# target to preprocess a source file
+src/plotter.cpp.i:
+	$(MAKE) -f CMakeFiles/vo.dir/build.make CMakeFiles/vo.dir/src/plotter.cpp.i
+.PHONY : src/plotter.cpp.i
+
+src/plotter.s: src/plotter.cpp.s
+
+.PHONY : src/plotter.s
+
+# target to generate assembly for a file
+src/plotter.cpp.s:
+	$(MAKE) -f CMakeFiles/vo.dir/build.make CMakeFiles/vo.dir/src/plotter.cpp.s
+.PHONY : src/plotter.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -252,6 +279,9 @@ help:
 	@echo "... src/playback.o"
 	@echo "... src/playback.i"
 	@echo "... src/playback.s"
+	@echo "... src/plotter.o"
+	@echo "... src/plotter.i"
+	@echo "... src/plotter.s"
 .PHONY : help
 
 

@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/hatio/git/cam-vo/src/mono-vo.cpp" "/Users/hatio/git/cam-vo/cmake-build-debug/CMakeFiles/vo.dir/src/mono-vo.cpp.o"
   "/Users/hatio/git/cam-vo/src/odometer.cpp" "/Users/hatio/git/cam-vo/cmake-build-debug/CMakeFiles/vo.dir/src/odometer.cpp.o"
   "/Users/hatio/git/cam-vo/src/playback.cpp" "/Users/hatio/git/cam-vo/cmake-build-debug/CMakeFiles/vo.dir/src/playback.cpp.o"
+  "/Users/hatio/git/cam-vo/src/plotter.cpp" "/Users/hatio/git/cam-vo/cmake-build-debug/CMakeFiles/vo.dir/src/plotter.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")
 

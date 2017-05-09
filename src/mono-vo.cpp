@@ -1,7 +1,8 @@
 #include "mono-vo.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     Camera camera;
+    Plotter plotter;
     Playback playback("Road facing camera");
     camera.init(0);
 
@@ -11,10 +12,12 @@ int main(int argc, char** argv) {
     Mat image;
     Mat colorImage;
 
-    while((numFrame = camera.capture(image)) >= 0) {
+    while ((numFrame = camera.capture(image)) >= 0) {
         double x, y, z;
 
         odometer.estimate(image, 1.0, x, y, z);
+
+        plotter.plot(x, y, z);
 
         cvtColor(image, colorImage, COLOR_GRAY2RGB);
         playback.redraw(colorImage, odometer.getLastFeatures(), odometer.getCurrFeatures(), odometer.getR());

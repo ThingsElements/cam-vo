@@ -17,8 +17,6 @@ void Camera::init(int cameraNumber) {
 
     camera.set(CV_CAP_PROP_FRAME_WIDTH, 640);
     camera.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
-
-    namedWindow("mono-vo");
 }
 
 double Camera::getFocal() {
