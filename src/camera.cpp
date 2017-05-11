@@ -17,11 +17,15 @@ void Camera::init(int cameraNumber) {
 
     camera.set(CV_CAP_PROP_FRAME_WIDTH, 640);
     camera.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+
+//    //////// image
+    // sprintf(folder, "../data/01/images");
+    // seq = 0;
 }
 
 double Camera::getFocal() {
-//    return 789.7786;
-    return 718.8560;
+    // return 718.8560;
+    return 514.7320;
 }
 
 double Camera::getScale() {
@@ -66,8 +70,8 @@ double Camera::getScale() {
 }
 
 Point2d Camera::getPrinciplePoint() {
-//    return Point2d(331.9654, 251.3903);
-    return Point2d(607.1928, 185.2157);
+    // return Point2d(607.1928, 185.2157);
+    return Point2d(335.7723, 247.8904);
 }
 
 int Camera::capture(Mat& image) {
@@ -84,4 +88,20 @@ int Camera::capture(Mat& image) {
     image = grayImage;
 
     return seq++;
+
+//    //////////// image
+    // if(seq >= MAX_FRAME)
+    // return -1;
+    //
+    // char filename[200];
+    // Mat grayImage;
+    //
+    // sprintf(filename, "%s/%06d.png", folder, seq);
+    // Mat colorImage = imread(filename);
+    //
+    // cvtColor(colorImage, grayImage, COLOR_BGR2GRAY);
+    //
+    // image = grayImage;
+    //
+    // return seq++;
 }

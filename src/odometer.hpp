@@ -28,6 +28,7 @@ public:
 
     vector<Point2f>& getLastFeatures();
     vector<Point2f>& getCurrFeatures();
+    vector<Point2f>& getPrevFeatures();
 
     Mat& getR();
 };

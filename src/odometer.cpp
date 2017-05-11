@@ -11,6 +11,10 @@ vector<Point2f>& Odometer::getLastFeatures() {
     return lastFeatures;
 }
 
+vector<Point2f>& Odometer::getPrevFeatures() {
+    return prevFeatures;
+}
+
 vector<Point2f>& Odometer::getCurrFeatures() {
     return currFeatures;
 }
@@ -29,21 +33,21 @@ void Odometer::featureTracking(Mat prevImage, Mat currImage, vector<Point2f>& pr
     calcOpticalFlowPyrLK(prevImage, currImage, prevFeatures, currFeatures, status, err, winSize, 3, termcrit, 0, 0.001);
 
     // KLT 트래킹에 실패하거나 프레임 바깥으로 벗어난 포인트들을 버린다.
-    int indexCorrection = 0;
-    for(int i = 0;i < status.size();i++) {
-        Point2f pt = currFeatures.at(i - indexCorrection);
+   int indexCorrection = 0;
+   for(int i = 0;i < status.size();i++) {
+       Point2f pt = currFeatures.at(i - indexCorrection);
 
-        if((status.at(i) == 0)||(pt.x < 0)||(pt.y < 0)) {
+       if((status.at(i) == 0)||(pt.x < 0)||(pt.y < 0)) {
 
-            if((pt.x < 0) || (pt.y < 0))
-                status.at(i) = 0;
+           if((pt.x < 0) || (pt.y < 0))
+               status.at(i) = 0;
 
-            prevFeatures.erase (prevFeatures.begin() + (i - indexCorrection));
-            currFeatures.erase (currFeatures.begin() + (i - indexCorrection));
+           prevFeatures.erase (prevFeatures.begin() + (i - indexCorrection));
+           currFeatures.erase (currFeatures.begin() + (i - indexCorrection));
 
-            indexCorrection++;
-        }
-    }
+           indexCorrection++;
+       }
+   }
 }
 
 void Odometer::featureDetection(Mat image, vector<Point2f>& features)  {

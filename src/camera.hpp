@@ -2,10 +2,13 @@
 
 class Camera {
 private:
-    const char *windowName = "mono-vo";
+    const char *windowName = "cam-vo";
     VideoCapture camera;
     Mat cameraFrame;
     int seq;
+
+    ////// image
+    char folder[100];
 
 public:
     void init(int cameraNumber);
