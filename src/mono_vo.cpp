@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     while ((numFrame = camera.capture(image)) >= 0) {
         double x, y, z;
 
-        odometer.estimate(image, camera.getScale(), x, y, z);
+        odometer.estimate(image, 1.0, x, y, z);
 
         plotter.plot(x, y, z);
 

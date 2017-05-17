@@ -1,6 +1,6 @@
 #include "odometer.hpp"
 
-#define MIN_NUM_FEAT 2000
+#define MIN_NUM_FEAT 500
 
 Odometer::Odometer(double focal, Point2d pp) {
     this->focal = focal;
@@ -20,13 +20,14 @@ vector<Point2f>& Odometer::getCurrFeatures() {
 }
 
 Mat& Odometer::getR() {
-    return R;
+    return R_f;
 }
 
-void Odometer::featureTracking(Mat prevImage, Mat currImage, vector<Point2f>& prevFeatures, vector<Point2f>& currFeatures, vector<uchar>& status) {
+void Odometer::featureTracking(Mat prevImage, Mat currImage, vector<Point2f>& prevFeatures, vector<Point2f>& currFeatures) {
 
     // 트래킹에 실패한 포인트들은 버린다.
     vector<float> err;
+    vector<uchar> status;
     Size winSize = Size(21,21);
     TermCriteria termcrit = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30, 0.01);
 
@@ -39,8 +40,8 @@ void Odometer::featureTracking(Mat prevImage, Mat currImage, vector<Point2f>& pr
 
        if((status.at(i) == 0)||(pt.x < 0)||(pt.y < 0)) {
 
-           if((pt.x < 0) || (pt.y < 0))
-               status.at(i) = 0;
+          //  if((pt.x < 0) || (pt.y < 0))
+          //      status.at(i) = 0;
 
            prevFeatures.erase (prevFeatures.begin() + (i - indexCorrection));
            currFeatures.erase (currFeatures.begin() + (i - indexCorrection));
@@ -70,12 +71,16 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
         return 0;
     }
 
-    featureTracking(prevImage, currImage, prevFeatures, currFeatures, status);
+    featureTracking(prevImage, currImage, prevFeatures, currFeatures);
 
     E = findEssentialMat(currFeatures, prevFeatures, focal, pp, RANSAC, 0.999, 1.0, mask);
     recoverPose(E, currFeatures, prevFeatures, R, t, focal, pp, mask);
 
     Mat prevPts(2, prevFeatures.size(), CV_64F), currPts(2, currFeatures.size(), CV_64F);
+
+    // cout << prevFeatures.size() << ", " << currFeatures.size() << endl;
+    // cout << "RANSAC" << RANSAC << endl;
+    // cout << "mask" << mask << endl;
 
     for(int i = 0;i < prevFeatures.size();i++) {
         //this (x,y) combination makes sense as observed from the source code of triangulatePoints on GitHub
@@ -92,8 +97,8 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
     }
 
     if(scale > 0.1
-       && (t.at<double>(2) > t.at<double>(0))
-       && (t.at<double>(2) > t.at<double>(1))
+      //  && (t.at<double>(2) > t.at<double>(0))
+      //  && (t.at<double>(2) > t.at<double>(1))
             ) {
 
         t_f = t_f + scale * (R_f * t);
@@ -102,12 +107,13 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
         cout << "scale below 0.1, or incorrect translation" << endl;
     }
 
-    cout << " R : " << R << endl;
+    // cout << " E : " << E << endl;
 
     // 피쳐의 갯수가 작아지면, 다시 검출함.
     if(prevFeatures.size() < MIN_NUM_FEAT) {
+      cout << " ------------- " << endl;
         featureDetection(prevImage, prevFeatures);
-        featureTracking(prevImage, currImage, prevFeatures, currFeatures, status);
+        featureTracking(prevImage, currImage, prevFeatures, currFeatures);
     }
 
     x = t_f.at<double>(0);

@@ -37,18 +37,18 @@ int Playback::redraw(Mat image, vector<Point2f>& prevFeatures, vector<Point2f>& 
 
         Point2f origin(320, 240);
 
-        double *r = (double*)R.data;
-
-        AXIS = R * AXIS;
-        double *axis = (double*)AXIS.data;
+        // double *r = (double*)R.data;
+        // AXIS = Mat(3, 3, CV_64F);
+        Mat A = R * AXIS;
+        double *axis = (double*)A.data;
 
         Point2f xAxis(axis[0] * 100 + origin.x, axis[3] * 100 + origin.y);
         Point2f yAxis(axis[1] * 100 + origin.x, axis[4] * 100 + origin.y);
         Point2f zAxis(axis[2] * 100 + origin.x, axis[5] * 100 + origin.y);
 
-//        Point2f xAxis(r[0] * 100 + origin.x, r[3] * 100 + origin.y);
-//        Point2f yAxis(r[1] * 100 + origin.x, r[4] * 100 + origin.y);
-//        Point2f zAxis(r[2] * 100 + origin.x, r[5] * 100 + origin.y);
+      //  Point2f xAxis(r[0] * 100 + origin.x, r[3] * 100 + origin.y);
+      //  Point2f yAxis(r[1] * 100 + origin.x, r[4] * 100 + origin.y);
+      //  Point2f zAxis(r[2] * 100 + origin.x, r[5] * 100 + origin.y);
 
         line(image, origin, xAxis, CV_RGB(255, 0, 0), 2);
         line(image, origin, yAxis, CV_RGB(0, 255, 0), 2);
