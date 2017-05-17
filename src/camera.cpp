@@ -17,6 +17,7 @@ void Camera::init(int cameraNumber) {
 
     camera.set(CV_CAP_PROP_FRAME_WIDTH, 640);
     camera.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+    camera.set(CV_CAP_PROP_AUTOFOCUS, 0);
 
 //    //////// image
     // sprintf(folder, "../data/01/images");

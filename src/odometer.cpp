@@ -79,8 +79,11 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
     Mat prevPts(2, prevFeatures.size(), CV_64F), currPts(2, currFeatures.size(), CV_64F);
 
     // cout << prevFeatures.size() << ", " << currFeatures.size() << endl;
-    // cout << "RANSAC" << RANSAC << endl;
+    // cout << "E" << E << endl;
     // cout << "mask" << mask << endl;
+
+    double prevSum = 0;
+    double currSum = 0;
 
     for(int i = 0;i < prevFeatures.size();i++) {
         //this (x,y) combination makes sense as observed from the source code of triangulatePoints on GitHub
@@ -89,6 +92,20 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
 
         currPts.at<double>(0, i) = currFeatures.at(i).x;
         currPts.at<double>(1, i) = currFeatures.at(i).y;
+
+        prevSum += prevPts.at<double>(0, i);
+        currSum += currPts.at<double>(0, i);
+
+
+        cout << "==========================" << endl;
+        cout << "prevPts.x : " << prevPts.at<double>(0, i) << endl;
+        cout << "prevPts.y : " << prevPts.at<double>(1, i) << endl;
+
+        cout << "currPts.x : " << currPts.at<double>(0, i) << endl;
+        cout << "currPts.y : " << currPts.at<double>(1, i) << endl;
+        cout << "prevSum : " << prevSum << endl;
+        cout << "currSum : " << currSum << endl;
+        cout << "==========================" << endl;
     }
 
     if(R_f.empty()) {
@@ -96,29 +113,37 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
         t_f = t.clone();
     }
 
-    if(scale > 0.1
-      //  && (t.at<double>(2) > t.at<double>(0))
-      //  && (t.at<double>(2) > t.at<double>(1))
-            ) {
+    if(abs(prevSum - currSum) > 100){
+      if(scale > 0.1
+        //  && (t.at<double>(2) > t.at<double>(0))
+        //  && (t.at<double>(2) > t.at<double>(1))
+              ) {
 
-        t_f = t_f + scale * (R_f * t);
-        R_f = R * R_f;
-    } else {
-        cout << "scale below 0.1, or incorrect translation" << endl;
+          t_f = t_f + scale * (R_f * t);
+          R_f = R * R_f;
+      } else {
+          cout << "scale below 0.1, or incorrect translation" << endl;
+      }
+
+      // cout << " E : " << E << endl;
+
+      // 피쳐의 갯수가 작아지면, 다시 검출함.
+      if(prevFeatures.size() < MIN_NUM_FEAT) {
+          featureDetection(prevImage, prevFeatures);
+          featureTracking(prevImage, currImage, prevFeatures, currFeatures);
+      }
+
+      x = t_f.at<double>(0);
+      y = t_f.at<double>(1);
+      z = t_f.at<double>(2);
     }
-
-    // cout << " E : " << E << endl;
 
     // 피쳐의 갯수가 작아지면, 다시 검출함.
     if(prevFeatures.size() < MIN_NUM_FEAT) {
-      cout << " ------------- " << endl;
         featureDetection(prevImage, prevFeatures);
         featureTracking(prevImage, currImage, prevFeatures, currFeatures);
     }
 
-    x = t_f.at<double>(0);
-    y = t_f.at<double>(1);
-    z = t_f.at<double>(2);
 
     prevImage = currImage;
     lastFeatures = prevFeatures;
