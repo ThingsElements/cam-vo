@@ -5,20 +5,7 @@ Playback::Playback(const char* name) {
     strncpy(this->name, name, strlen(name));
     namedWindow(this->name, WINDOW_AUTOSIZE);
 
-    AXIS = Mat(3, 3, CV_64F);
-
-    AXIS.at<double>(0, 0) = 1;
-    AXIS.at<double>(1, 0) = 0;
-    AXIS.at<double>(2, 0) = 0;
-
-    AXIS.at<double>(0, 1) = 0;
-    AXIS.at<double>(1, 1) = 1;
-    AXIS.at<double>(2, 1) = 0;
-
-    AXIS.at<double>(0, 2) = 0;
-    AXIS.at<double>(1, 2) = 0;
-    AXIS.at<double>(2, 2) = 1;
-
+    AXIS = Mat::eye(3, 3, CV_64F);
 }
 
 int Playback::redraw(Mat image, vector<Point2f>& prevFeatures, vector<Point2f>& currFeatures, Mat& R) {
@@ -46,9 +33,9 @@ int Playback::redraw(Mat image, vector<Point2f>& prevFeatures, vector<Point2f>& 
         Point2f yAxis(axis[1] * 100 + origin.x, axis[4] * 100 + origin.y);
         Point2f zAxis(axis[2] * 100 + origin.x, axis[5] * 100 + origin.y);
 
-      //  Point2f xAxis(r[0] * 100 + origin.x, r[3] * 100 + origin.y);
-      //  Point2f yAxis(r[1] * 100 + origin.x, r[4] * 100 + origin.y);
-      //  Point2f zAxis(r[2] * 100 + origin.x, r[5] * 100 + origin.y);
+        // Point2f xAxis(r[0] * 100 + origin.x, r[3] * 100 + origin.y);
+        // Point2f yAxis(r[1] * 100 + origin.x, r[4] * 100 + origin.y);
+        // Point2f zAxis(r[2] * 100 + origin.x, r[5] * 100 + origin.y);
 
         line(image, origin, xAxis, CV_RGB(255, 0, 0), 2);
         line(image, origin, yAxis, CV_RGB(0, 255, 0), 2);

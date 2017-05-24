@@ -16,7 +16,7 @@ int Plotter::plot(double dx, double dy, double dz) {
   int x = int(dx) + 300;
   int y = int(dz) + 100;
 
-  circle(trajectory, Point(x, y) ,1, CV_RGB(255, 0, 0), 1);
+  circle(trajectory, Point(x, y), 1, CV_RGB(255, 0, 0), 1);
 
   rectangle(trajectory, Point(10, 30), Point(550, 70), CV_RGB(0,0,0), CV_FILLED);
   sprintf(text, "Coordinates: x = %02fm y = %02fm z = %02fm", dx, dy, dz);

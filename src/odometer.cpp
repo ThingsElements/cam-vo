@@ -36,18 +36,17 @@ void Odometer::featureTracking(Mat prevImage, Mat currImage, vector<Point2f>& pr
     // KLT 트래킹에 실패하거나 프레임 바깥으로 벗어난 포인트들을 버린다.
    int indexCorrection = 0;
    for(int i = 0;i < status.size();i++) {
-       Point2f pt = currFeatures.at(i - indexCorrection);
+     Point2f pt = currFeatures.at(i - indexCorrection);
+     if((status.at(i) == 0)||(pt.x < 0)||(pt.y < 0)) {
 
-       if((status.at(i) == 0)||(pt.x < 0)||(pt.y < 0)) {
+        //  if((pt.x < 0) || (pt.y < 0))
+        //      status.at(i) = 0;
 
-          //  if((pt.x < 0) || (pt.y < 0))
-          //      status.at(i) = 0;
+        prevFeatures.erase (prevFeatures.begin() + (i - indexCorrection));
+        currFeatures.erase (currFeatures.begin() + (i - indexCorrection));
 
-           prevFeatures.erase (prevFeatures.begin() + (i - indexCorrection));
-           currFeatures.erase (currFeatures.begin() + (i - indexCorrection));
-
-           indexCorrection++;
-       }
+        indexCorrection++;
+     }
    }
 }
 
@@ -82,6 +81,8 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
     // cout << "E" << E << endl;
     // cout << "mask" << mask << endl;
 
+    // cout << "t : " << t << endl;
+
     double prevSum = 0;
     double currSum = 0;
 
@@ -97,15 +98,15 @@ int Odometer::estimate(Mat currImage, double scale, double& x, double& y, double
         currSum += currPts.at<double>(0, i);
 
 
-        cout << "==========================" << endl;
-        cout << "prevPts.x : " << prevPts.at<double>(0, i) << endl;
-        cout << "prevPts.y : " << prevPts.at<double>(1, i) << endl;
-
-        cout << "currPts.x : " << currPts.at<double>(0, i) << endl;
-        cout << "currPts.y : " << currPts.at<double>(1, i) << endl;
-        cout << "prevSum : " << prevSum << endl;
-        cout << "currSum : " << currSum << endl;
-        cout << "==========================" << endl;
+        // cout << "==========================" << endl;
+        // cout << "prevPts.x : " << prevPts.at<double>(0, i) << endl;
+        // cout << "prevPts.y : " << prevPts.at<double>(1, i) << endl;
+        //
+        // cout << "currPts.x : " << currPts.at<double>(0, i) << endl;
+        // cout << "currPts.y : " << currPts.at<double>(1, i) << endl;
+        // cout << "prevSum : " << prevSum << endl;
+        // cout << "currSum : " << currSum << endl;
+        // cout << "==========================" << endl;
     }
 
     if(R_f.empty()) {
