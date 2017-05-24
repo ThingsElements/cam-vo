@@ -3,25 +3,25 @@
 #define MAX_FRAME 100000
 
 void Camera::init(int cameraNumber) {
-    seq = 0;
-    // Get access to the default camera.
-    try {   // Surround the OpenCV call by a try/catch block so we can give a useful error message!
-        camera.open(cameraNumber);
-        sleep(1);
-    } catch (Exception &e) {}
-    if ( !camera.isOpened() ) {
-        cerr << "ERROR: Could not access the camera!" << endl;
-        exit(1);
-    }
-    cout << "Loaded camera " << cameraNumber << "." << endl;
-
-    camera.set(CV_CAP_PROP_FRAME_WIDTH, 640);
-    camera.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
-    camera.set(CV_CAP_PROP_AUTOFOCUS, 0);
+    // seq = 0;
+    // // Get access to the default camera.
+    // try {   // Surround the OpenCV call by a try/catch block so we can give a useful error message!
+    //     camera.open(cameraNumber);
+    //     sleep(1);
+    // } catch (Exception &e) {}
+    // if ( !camera.isOpened() ) {
+    //     cerr << "ERROR: Could not access the camera!" << endl;
+    //     exit(1);
+    // }
+    // cout << "Loaded camera " << cameraNumber << "." << endl;
+    //
+    // camera.set(CV_CAP_PROP_FRAME_WIDTH, 640);
+    // camera.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+    // camera.set(CV_CAP_PROP_AUTOFOCUS, 0);
 
 //    //////// image
-    // sprintf(folder, "../data/01/images");
-    // seq = 0;
+    sprintf(folder, "../data/01/images");
+    seq = 0;
 }
 
 double Camera::getFocal() {
@@ -76,33 +76,40 @@ Point2d Camera::getPrinciplePoint() {
 }
 
 int Camera::capture(Mat& image) {
-    camera >> cameraFrame;
-    if(cameraFrame.empty()){
-        cerr << "ERROR: Couldn't grab the next camera frame." <<endl;
-        exit(1);
-    }
-
-    Mat grayImage;
-
-    cvtColor(cameraFrame, grayImage, COLOR_BGR2GRAY);
-
-    image = grayImage;
-
-    return seq++;
-
-//    //////////// image
-    // if(seq >= MAX_FRAME)
-    // return -1;
+    // camera >> cameraFrame;
+    // if(cameraFrame.empty()){
+    //     cerr << "ERROR: Couldn't grab the next camera frame." <<endl;
+    //     exit(1);
+    // }
     //
-    // char filename[200];
     // Mat grayImage;
     //
-    // sprintf(filename, "%s/%06d.png", folder, seq);
-    // Mat colorImage = imread(filename);
-    //
-    // cvtColor(colorImage, grayImage, COLOR_BGR2GRAY);
+    // cvtColor(cameraFrame, grayImage, COLOR_BGR2GRAY);
     //
     // image = grayImage;
     //
     // return seq++;
+
+//    //////////// image
+    if(seq >= MAX_FRAME)
+    return -1;
+
+    char filename[200];
+    Mat grayImage;
+
+    sprintf(filename, "%s/%06d.png", folder, seq);
+    Mat colorImage = imread(filename);
+
+    Mat sharpen_image;
+    Mat sharpen_kernel = (Mat_<char>(3, 3) << 0, -1, 0,
+                                             -1,  5,-1,
+                                              0, -1, 0);
+
+    filter2D(colorImage, sharpen_image, colorImage.depth(), sharpen_kernel);
+
+    cvtColor(sharpen_image, grayImage, COLOR_BGR2GRAY);
+
+    image = grayImage;
+
+    return seq++;
 }
